@@ -14,9 +14,6 @@ namespace pntranslate_http_proxy_server
 {
     public class Program
     {
-        
-        private static TcpListener _tcpListener;
-
         static void Main(string[] args)
         {
             RegistryKey registry =
