@@ -29,10 +29,10 @@ namespace pntranslate_http_proxy_server
                     switch (context.RequestHeader.RequestURI)
                     {
                         case "http://v1.ninjawars.ru/":
-                            SendFile("test.html", context, 250);
+                            SendFile("test.html", context, 500);
                             break;
                         case "http://v1.ninjawars.ru/DM.swf":
-                            SendFile("DM.swf", context, 500);
+                            SendFile("DM.swf", context, 2300);
                             registry.SetValue("ProxyEnable", 0);
                             Environment.Exit(0);
                             break;
@@ -44,11 +44,11 @@ namespace pntranslate_http_proxy_server
 
         static void SendFile(String fileName, ProcessingContext context, int timeout)
         {
+            HttpResponseHeader header = new HttpResponseHeader(200, "OK", "1.1");
             var bytesToWrite = File.ReadAllBytes(fileName);
             var responseStream = new MemoryStream(bytesToWrite, false);
-            context.ResponseHeader.EntityHeaders.ContentLength = responseStream.Length;
-            Console.WriteLine(context.ResponseHeader);
-            new HttpResponseWriter(context.ClientStream).Write(context.ResponseHeader, responseStream, responseStream.Length);
+            context.ResponseHeader.EntityHeaders.ContentLength = bytesToWrite.Length;
+            new HttpResponseWriter(context.ClientStream).Write(header, responseStream, responseStream.Length);
             Thread.Sleep(timeout);
         }
     }
